@@ -17,6 +17,7 @@ public class Accessory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_accessory_code")
     private Long accessoryCode;
+    //테스트입니다.
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_code", nullable = false)
