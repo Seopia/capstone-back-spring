@@ -42,7 +42,7 @@ public class UserService {
     public UserProfileDto getProfileData(Long userCode){
         User user = userRepository.findById(userCode).orElseThrow();
         Integer conversationCount = conversationRepository.countByUserCode(userCode);
-        Integer monthCount = conversationRepository.countByUserCodeAndDateBetween(userCode, LocalDate.now().withMonth(1).atStartOfDay(), LocalDate.now().withMonth(1).atStartOfDay().plusMonths(1));
+        Integer monthCount = conversationRepository.countByUserCodeAndDateBetween(userCode, LocalDate.now().withDayOfMonth(1).atStartOfDay(), LocalDate.now().withDayOfMonth(1).atStartOfDay().plusMonths(1));
         return new UserProfileDto(
                 user.getName(),
                 user.getEmail(),
