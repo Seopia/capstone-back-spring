@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -48,14 +49,22 @@ public class Forum {
     @Column(name = "create_at", updatable = false)
     private LocalDateTime createdAt;
 
+    @Column(name = "diary_date")
+    private LocalDate diaryDate;
+
+    @Column(name = "emotion_score")
+    private Float emotionScore;
+
     @Builder
-    public Forum(Long userCode, String title, String content, Long analysisCode) {
+    public Forum(Long userCode, String title, String content, Long analysisCode, LocalDate diaryDate, Float emotionScore) {
         this.userCode = userCode;
         this.title = title;
         this.content = content;
         // this.analysisCode = analysisCode;
         this.isDeleted = false;
         this.likedUserCodes = new HashSet<>();
+        this.diaryDate = diaryDate;
+        this.emotionScore = emotionScore;
     }
 
     public void toggleLike(Long userCode) {

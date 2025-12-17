@@ -1,6 +1,8 @@
 package com.website.board.dto;
 
 import lombok.Data;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class ForumDto {
@@ -9,6 +11,10 @@ public class ForumDto {
     public static class CreateRequest {
         private String title;
         private String content;
+        private int year;
+        private int month;
+        private int day;
+        private float emotionScore;
     }
 
     @Data
@@ -25,10 +31,11 @@ public class ForumDto {
         private String content;
         private boolean deleted;
         private String analysisSummary;
-        private String emotionName;
+        private Float emotionScore;
         private int commentCount;
         private int likeCount;
         private LocalDateTime createdAt;
+        private LocalDate diaryDate;
 
         public static Response from(com.website.board.domain.Forum forum, long commentCount) {
             Response response = new Response();
@@ -38,7 +45,7 @@ public class ForumDto {
             response.setContent(forum.getContent());
             response.setDeleted(forum.isDeleted());
             response.setAnalysisSummary(null);
-            response.setEmotionName(null);
+            response.setEmotionScore(forum.getEmotionScore());
             response.setCommentCount((int) commentCount);
             response.setLikeCount(
                     forum.getLikedUserCodes() != null
@@ -46,6 +53,7 @@ public class ForumDto {
                             : 0
             );
             response.setCreatedAt(forum.getCreatedAt());
+            response.setDiaryDate(forum.getDiaryDate());
             return response;
         }
     }

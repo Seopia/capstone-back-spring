@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,11 +23,14 @@ public class BoardService {
 
     @Transactional
     public Long createForumPost(Long userCode, ForumDto.CreateRequest request) {
+        LocalDate diaryDate = LocalDate.of(request.getYear(),request.getMonth(),request.getDay());
         Forum forum = Forum.builder()
                 .userCode(userCode)
                 .title(request.getTitle())
                 .content(request.getContent())
                 .analysisCode(null)
+                .diaryDate(diaryDate)
+                .emotionScore(request.getEmotionScore())
                 .build();
         return forumRepository.save(forum).getId();
     }
