@@ -232,7 +232,7 @@ public class ChatService {
      * @return Message 엔티티 페이지 객체로 그대로 반환
      */
     public Page<Message> getMessages(Long userCode, String roomId, int page) {
-        Pageable pageable = PageRequest.of(page, 10, Sort.by("createdAt").descending());
+        Pageable pageable = PageRequest.of(page, 10, Sort.by("createAt").descending());
         return messageRepository.findByConvIdAndUserCode(new ObjectId(roomId), userCode, pageable);
     }
 }

@@ -40,7 +40,8 @@ public class JWTFilter extends OncePerRequestFilter {
 
         // 토큰 만료 시 인증 처리하지 않고 통과
         if (jwtUtil.isExpired(token)) {
-            filterChain.doFilter(request, response);
+            System.out.println("토큰 만료");
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED,"로그인이 만료되었습니다.");
             return;
         }
 

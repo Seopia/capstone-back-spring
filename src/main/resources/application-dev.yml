@@ -1,0 +1,13 @@
+custom:
+  setting:
+    cors: http://localhost:3000
+    kakao:
+      redirect-uri: http://localhost:3000/redirect
+      client-id: aa744aa96b95e26a882f6c6d522c3d97
+spring:
+  datasource:
+    url: jdbc:mariadb://121.136.51.30:3307/capstone
+  data:
+    mongodb:
+      uri: mongodb://seopia:fK08rhKpHTsrzYHHOEPqlVhp9DJ2fpuLPvKxFX51TocPdPnDIk@121.136.51.30:27017/chatbot?authSource=admin
+      database: chatbot

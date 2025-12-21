@@ -70,7 +70,8 @@ public class SecurityConfig {
                                 "/login/**",
                                 "/oauth2/**",
                                 "/login/oauth2/**",
-                                "/favicon.ico"
+                                "/favicon.ico",
+                                "/error"
                         ).permitAll()
                         .requestMatchers("/auth/**").authenticated()
                         .anyRequest().denyAll()

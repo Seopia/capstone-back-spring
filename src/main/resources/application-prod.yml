@@ -1,0 +1,13 @@
+custom:
+  setting:
+    cors: http://www.react.ai.kr
+    kakao:
+      redirect-uri: http://www.react.ai.kr/redirect
+      client-id: aa744aa96b95e26a882f6c6d522c3d97
+spring:
+  datasource:
+    url: jdbc:mariadb://localhost:3306/capstone
+  data:
+    mongodb:
+      uri: mongodb://seopia:fK08rhKpHTsrzYHHOEPqlVhp9DJ2fpuLPvKxFX51TocPdPnDIk@localhost:27017/chatbot?authSource=admin
+      database: chatbot

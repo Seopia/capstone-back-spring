@@ -10,6 +10,7 @@ import com.website.user.kakao.dto.KakaoUserResponse;
 import com.website.user.dto.SignupRequestDto;
 import com.website.user.kakao.Kakao;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,10 @@ public class UserService {
     private final UserRepository userRepository;
     private final ConversationRepository conversationRepository;
     private final JWTUtil jwtUtil;
+    @Value("${custom.setting.kakao.redirect-uri}")
+    private String redirectUri;
+    @Value("${custom.setting.kakao.client-id}")
+    private String clientId;
 
     public UserService(UserRepository userRepository, ConversationRepository conversationRepository, JWTUtil jwtUtil) {
         this.userRepository = userRepository;
@@ -30,14 +35,14 @@ public class UserService {
     }
     @Transactional
     public String socialKaKaoLogin(String code) {
-        Kakao kakao = new Kakao(code);
+        Kakao kakao = new Kakao(code, redirectUri, clientId);
         KakaoUserResponse user = kakao.getUser();
         User loginUser = checkUser(
         "kakao",
                 user.getId(),
                 user.getKakaoAccount().getProfile().getNickname(),
                 user.getKakaoAccount().getProfile().getProfileImageUrl());
-        return "Bearer "+jwtUtil.createJwt(loginUser.getUserCode(), loginUser.getName(), loginUser.getRole(), 1000 * 60 * 60 * 10L);
+        return "Bearer "+jwtUtil.createJwt(loginUser.getUserCode(), loginUser.getName(), loginUser.getRole(), 1000L * 60 * 60 * 24 * 7);    //10시간
     }
     public UserProfileDto getProfileData(Long userCode){
         User user = userRepository.findById(userCode).orElseThrow();
