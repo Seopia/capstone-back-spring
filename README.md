@@ -19,21 +19,22 @@
 | **Framework** | Spring Boot 3.2.4 |
 | **Language** | Java 17 |
 | **Security** | Spring Security, JWT, OAuth2 (Kakao) |
-| **Database** | **MySQL** (User/Community), **MongoDB** (Chat Logs) |
-| **Communication** | WebSocket (STOMP), REST API |
-| **AI Integration** | LangChain (LLM Service) |
+| **Database** | MariaDB (User/Community), MongoDB (Chat Logs) |
+| **AI Framework** | LangChain (Prompt & Context Management) |
+| **AI Model** | OpenAI GPT API |
+| **Communication** | REST API |
 
 ### Frontend
 | Category | Technology |
 | --- | --- |
 | **Framework** | React |
-| **Styling** | Styled-components (or CSS Framework) |
-| **Communication** | Axios, SockJS |
+| **Styling** | Tailwind CSS |
+| **Communication** | Axios |
 
 ### Infrastructure
 | Category | Technology |
 | --- | --- |
-| **Server** | AWS EC2 (Ubuntu) / Raspberry Pi |
+| **Server** | Raspberry Pi |
 | **Build Tool** | Gradle |
 
 ---
@@ -41,7 +42,7 @@
 ## ✨ 주요 기능 (Key Features)
 
 ### 1. 💬 AI 심리 상담 챗봇
-* **실시간 대화**: WebSocket(STOMP)을 이용한 지연 없는 실시간 채팅 환경 구현
+* **LLM 기반 대화**: LangChain과 GPT 모델을 활용하여 문맥을 이해하는 자연스러운 상담 제공
 * **대화 로그 저장**: MongoDB를 활용하여 방대한 양의 대화 내역을 유연하게 저장하고 관리
 
 ### 2. 📊 개인화된 성장 지표 (Growth Metrics)
@@ -121,42 +122,36 @@ com.website
 
 ```mermaid
 graph TD
-    subgraph Client ["Client Side"]
+    subgraph Client
         FE[("🖥️ React Frontend")]
     end
 
-    subgraph Server ["Backend Server (AWS EC2)"]
-        direction TB
+    subgraph Server ["Backend Server (Raspberry Pi)"]
         SB[("🍃 Spring Boot Application")]
+        Logic["Core Logic<br/>(Auth, Chat, Board)"]
+        Lang[("🦜🔗 LangChain<br/>(LLM Orchestration)")]
         
-        subgraph Core_Logic ["Core Services"]
-            Auth[Security / JWT]
-            Chat[Chat Service & WebSocket]
-            Board[Board Service]
-            Analysis[Emotion Analysis Logic]
-        end
+        SB --> Logic
+        Logic --> Lang
     end
 
-    subgraph Data_Storage ["Hybrid Database"]
-        MySQL[("🐬 MySQL (RDBMS)<br/>- User Info<br/>- Board/Comment<br/>- Analysis Results")]
-        Mongo[("🍃 MongoDB (NoSQL)<br/>- Chat Logs<br/>- Conversation History")]
+    subgraph Database ["Hybrid Data Storage"]
+        Maria[("🐬 MariaDB (RDBMS)<br/>User / Board / Analysis")]
+        Mongo[("🍃 MongoDB (NoSQL)<br/>Chat Logs / History")]
     end
 
     subgraph External ["External Services"]
-        Kakao[("💬 Kakao OAuth")]
-        LLM[("🤖 LangChain / LLM")]
+        Kakao[("💬 Kakao Login")]
+        GPT[("🤖 OpenAI GPT API")]
     end
 
-    %% Flow Connections
-    FE -- "REST API (HTTP)" --> Auth
-    FE -- "WebSocket (STOMP)" --> Chat
+    FE -- "REST API" --> SB
     
-    SB --> Core_Logic
+    Logic -- "JPA" --> Maria
+    Logic -- "MongoRepository" --> Mongo
+    Logic -- "OAuth2" --> Kakao
     
-    Auth -- "Social Login" --> Kakao
-    Chat -- "Prompting" --> LLM
-    
-    Board -- "JPA" --> MySQL
-    Analysis -- "JPA" --> MySQL
-    Chat -- "MongoRepository" --> Mongo
+    Lang -- "API Request" --> GPT
+
+
 
